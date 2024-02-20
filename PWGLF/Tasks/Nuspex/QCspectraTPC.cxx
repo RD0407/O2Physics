@@ -30,7 +30,7 @@
 
 
 using std::cout;
-using std::endl;
+
 using std::flush;
 
 #include <fstream>
@@ -53,10 +53,10 @@ using std::flush;
 #include "TH1I.h"
 #include "THnSparse.h"
 #include "TH1F.h"
-#include "TH2F.h"
+
 #include "TH3F.h"
 
-#include <vector>
+
 #include "TLorentzVector.h"
 
 #include <iostream>
