@@ -70,21 +70,6 @@ using std::array;
 using namespace o2::track;
 
 namespace o2::aod
-{
-    namespace hash
-    {
-        DECLARE_SOA_COLUMN(Bin, bin, int);
-    } // namespace hash
-
-    DECLARE_SOA_TABLE(Hashes, "AOD", "HASH", hash::Bin);
-}
-
-double eta2y(double pt, double m, double eta)
-{
-    double mt = sqrt(m * m + pt * pt);
-    return asinh(pt / mt * sinh(eta));
-}
-
 struct QCspectraTPC
 {
     Configurable<float> cfgCutVertex{"cfgCutVertex", 10.0f, "Accepted z-vertex range"};
