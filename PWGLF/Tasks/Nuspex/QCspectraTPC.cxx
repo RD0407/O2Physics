@@ -10,7 +10,6 @@
 // or submit itself to any jurisdiction.
 
 #include "Framework/runDataProcessing.h"
-
 #include "Framework/AnalysisTask.h"
 #include "Common/DataModel/TrackSelectionTables.h"
 #include "Common/DataModel/PIDResponse.h"
