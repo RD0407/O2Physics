@@ -51,8 +51,8 @@ struct QCspectraTPC {
   ConfigurableAxis binsEta{"binsEta", {100, -1, 1}, "Binning of the eta axis"};
   Configurable<float> cfgCutDCAXY{"cfgCutDCAXY", 0.05f, "DCAXY range for tracks"};
   Configurable<float> cfgCutDCAZ{"cfgCutDCAZ", 2.0f, "DCAZ range for tracks"};
-  Configurable<float> maxChi2PerClusterTPC{"maxChi2PerClusterTPC", 10.f, "Additional cut on the maximum value of the chi2 per cluster in the TPC"};
-  Configurable<float> maxChi2PerClusterITS{"maxChi2PerClusterITS", 100.f, "Additional cut on the maximum value of the chi2 per cluster in the ITS"};
+  Configurable<float> maxChi2PerClusterTPC{"maxChi2PerClusterTPC", 4.f, "Additional cut on the maximum value of the chi2 per cluster in the TPC"};
+  Configurable<float> maxChi2PerClusterITS{"maxChi2PerClusterITS", 36.f, "Additional cut on the maximum value of the chi2 per cluster in the ITS"};
   Configurable<float> minTPCNClsFound{"minTPCNClsFound", 0.f, "Additional cut on the minimum value of the number of found clusters in the TPC"};
   Configurable<float> minNCrossedRowsOverFindableClustersTPC{"minNCrossedRowsOverFindableClustersTPC", 0.8f, "Additional cut on the minimum value of the ratio between crossed rows and findable clusters in the TPC"};
   Configurable<float> minNCrossedRowsTPC{"minNCrossedRowsTPC", 0.f, "Additional cut on the minimum number of crossed rows in the TPC"};
@@ -153,11 +153,11 @@ struct QCspectraTPC {
         continue;
       // if (track.tpcNClsFound() > minTPCNClsFound) continue;
       // if (track.tpcNClsCrossedRows() > minNCrossedRowsTPC) continue;
-      // if (track.tpcChi2NCl() < maxChi2PerClusterTPC) continue;
-      // if (track.itsChi2NCl() < maxChi2PerClusterITS) continue;
-      if (abs(track.dcaXY()) < cfgCutDCAXY)
+       if (track.tpcChi2NCl() > maxChi2PerClusterTPC) continue;
+       if (track.itsChi2NCl() > maxChi2PerClusterITS) continue;
+      if (abs(track.dcaXY()) > cfgCutDCAXY)
         continue;
-      if (abs(track.dcaZ()) < cfgCutDCAZ)
+      if (abs(track.dcaZ()) > cfgCutDCAZ)
         continue;
 
       histos.fill(HIST("etaHistogram"), track.eta());
