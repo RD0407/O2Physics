@@ -149,7 +149,7 @@ struct QCspectraTPC {
         return;
       }
 
-      if (track.itsNCls() == ITSNCls)
+      if (track.itsNCls() != ITSNCls)
         continue;
       // if (track.tpcNClsFound() > minTPCNClsFound) continue;
       // if (track.tpcNClsCrossedRows() > minNCrossedRowsTPC) continue;
