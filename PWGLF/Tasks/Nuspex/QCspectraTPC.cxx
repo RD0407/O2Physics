@@ -53,7 +53,7 @@ struct QCspectraTPC {
   Configurable<float> cfgCutDCAZ{"cfgCutDCAZ", 2.0f, "DCAZ range for tracks"};
   Configurable<float> maxChi2PerClusterTPC{"maxChi2PerClusterTPC", 10.f, "Additional cut on the maximum value of the chi2 per cluster in the TPC"};
   Configurable<float> maxChi2PerClusterITS{"maxChi2PerClusterITS", 100.f, "Additional cut on the maximum value of the chi2 per cluster in the ITS"};
-  Configurable<float> minTPCNClsFound{"minTPCNClsFound", 0.f, "Additional cut on the minimum value of the number of found clusters in the TPC"};
+  Configurable<int> minTPCNClsFound{"minTPCNClsFound", 100, "Additional cut on the minimum value of the number of found clusters in the TPC"};
   Configurable<float> minNCrossedRowsOverFindableClustersTPC{"minNCrossedRowsOverFindableClustersTPC", 0.8f, "Additional cut on the minimum value of the ratio between crossed rows and findable clusters in the TPC"};
   Configurable<float> minNCrossedRowsTPC{"minNCrossedRowsTPC", 0.f, "Additional cut on the minimum number of crossed rows in the TPC"};
   Configurable<int> ITSNCls{"ITSNCls", 7, "Additional cut on the minimum number of ITS clusters"};
@@ -149,9 +149,8 @@ struct QCspectraTPC {
         return;
       }
 
-      if (track.itsNCls() == ITSNCls)
-        continue;
-      // if (track.tpcNClsFound() > minTPCNClsFound) continue;
+      if (track.itsNCls() != ITSNCls) {continue;}
+       if (track.tpcNClsFound() < minTPCNClsFound) continue;
       // if (track.tpcNClsCrossedRows() > minNCrossedRowsTPC) continue;
       // if (track.tpcChi2NCl() < maxChi2PerClusterTPC) continue;
       // if (track.itsChi2NCl() < maxChi2PerClusterITS) continue;
