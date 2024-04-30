@@ -88,8 +88,6 @@ struct QCspectraTPC {
     const AxisSpec phiAxis{200, 0, 7, "#it{#varphi} (rad)"};
     const AxisSpec dcaZAxis{binsDca, "DCA_{z} (cm)"};
     const AxisSpec multAxis{binsMultiplicity, "multiplicity estimator"};
-       
-
     histos.add("event/vertexz", "collision z position", HistType::kTH1F, {{100, -10., +10., "z position (cm)"}});
     histos.add("etaHistogram", "etaHistogram", kTH1F, {axisEta});
     histos.add("rapidityHistogram", "rapidityHistogram", kTH1F, {axisY});
@@ -139,7 +137,6 @@ struct QCspectraTPC {
       histos.add("spectraGen/proton/pos/histGenPtProtonSec", "generated particles", HistType::kTH1F, {ptAxis});
       histos.add("spectraRec/proton/pos/histRecPtProton", "recosntructed particles", HistType::kTH1F, {ptAxis});
       histos.add("spectraRec/proton/pos/histRecPtProtonPrim", "recosntructed particles", HistType::kTH1F, {ptAxis});
-      
       histos.add("MC/pi/pos/prm/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/ka/pos/prm/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/pr/pos/prm/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
@@ -157,7 +154,7 @@ struct QCspectraTPC {
       histos.add("MC/ka/pos/mat/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/ka/neg/mat/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/pr/pos/mat/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/mat/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});           
+      histos.add("MC/pr/neg/mat/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/pi/pos/prm/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/ka/pos/prm/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
       histos.add("MC/pr/pos/prm/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
@@ -500,12 +497,10 @@ for (auto& track : tracks) {
       }
  histos.fill(HIST("MC/pr/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
  if (track.hasTOF()) {
- histos.fill(HIST("MC/pr/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY()); 
+ histos.fill(HIST("MC/pr/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
  }
  }// primaries
- 
- 
 if (!mcParticle.isPhysicalPrimary()) {// secondaries loop start
     if (mcParticle.pdgCode() == 211) {
       if (std::abs(mcParticle.y()) > cfgCutY) {
@@ -775,7 +770,6 @@ if (!mcParticle.isPhysicalPrimary()) {// secondaries loop start
   } // process_mc loop end
  PROCESS_SWITCH(QCspectraTPC, processParticleGen, "process MC Generated tracks", true);
 
- 
 };
 
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
