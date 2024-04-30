@@ -25,7 +25,6 @@
 #include "Common/Core/TrackSelectionDefaults.h"
 #include "PWGLF/DataModel/LFParticleIdentification.h"
 #include "Framework/O2DatabasePDGPlugin.h"
-#include "PWGLF/DataModel/spectraTOF.h"
 #include "TPDGCode.h"
 
 using namespace o2;
