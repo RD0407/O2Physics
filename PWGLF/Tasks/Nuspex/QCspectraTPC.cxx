@@ -137,60 +137,60 @@ struct QCspectraTPC {
       histos.add("spectraGen/proton/pos/histGenPtProtonSec", "generated particles", HistType::kTH1F, {ptAxis});
       histos.add("spectraRec/proton/pos/histRecPtProton", "recosntructed particles", HistType::kTH1F, {ptAxis});
       histos.add("spectraRec/proton/pos/histRecPtProtonPrim", "recosntructed particles", HistType::kTH1F, {ptAxis});
-      histos.add("MC/pi/pos/prm/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/prm/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/prm/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/prm/pt/num", "recosntructed MC #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/prm/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/prm/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/str/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/str/pt/num", "recosntructed MC #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/str/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/str/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/str/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/str/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/mat/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/mat/pt/num", "recosntructed MC #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/mat/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/mat/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/mat/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/mat/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/prm/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/prm/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/prm/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/prm/pt/numtof", "recosntructed MC TOF #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/prm/pt/numtof", "recosntructed MC TOF k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/prm/pt/numtof", "recosntructed MC TOF #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/str/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/str/pt/numtof", "recosntructed MC TOF #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/str/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/str/pt/numtof", "recosntructed MC TOF k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/str/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/str/pt/numtof", "recosntructed MC TOF #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/mat/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/mat/pt/numtof", "recosntructed MC TOF #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/mat/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/mat/pt/numtof", "recosntructed MC TOF k^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/mat/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/mat/pt/numtof", "recosntructed MC TOF #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/prm/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/prm/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/prm/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/prm/pt/den", "generated MC K^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/prm/pt/den", "generated MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/prm/pt/den", "generated MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/str/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/str/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/str/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/str/pt/den", "generated MC K^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/str/pt/den", "generated MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/str/pt/den", "generated MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/pos/mat/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pi/neg/mat/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/pos/mat/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/ka/neg/mat/pt/den", "generated MC K^{-}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/pos/mat/pt/den", "generated MC p", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
-      histos.add("MC/pr/neg/mat/pt/den", "generated MC #bar{p}", HistType::kTHnSparseD, {ptAxis,multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/prm/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/prm/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/prm/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/prm/pt/num", "recosntructed MC #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/prm/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/prm/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/str/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/str/pt/num", "recosntructed MC #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/str/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/str/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/str/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/str/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/mat/pt/num", "recosntructed MC #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/mat/pt/num", "recosntructed MC #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/mat/pt/num", "recosntructed MC k^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/mat/pt/num", "recosntructed MC k^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/mat/pt/num", "recosntructed MC p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/mat/pt/num", "recosntructed MC #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/prm/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/prm/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/prm/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/prm/pt/numtof", "recosntructed MC TOF #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/prm/pt/numtof", "recosntructed MC TOF k^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/prm/pt/numtof", "recosntructed MC TOF #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/str/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/str/pt/numtof", "recosntructed MC TOF #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/str/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/str/pt/numtof", "recosntructed MC TOF k^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/str/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/str/pt/numtof", "recosntructed MC TOF #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/mat/pt/numtof", "recosntructed MC TOF #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/mat/pt/numtof", "recosntructed MC TOF #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/mat/pt/numtof", "recosntructed MC TOF k^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/mat/pt/numtof", "recosntructed MC TOF k^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/mat/pt/numtof", "recosntructed MC TOF p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/mat/pt/numtof", "recosntructed MC TOF #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/prm/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/prm/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/prm/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/prm/pt/den", "generated MC K^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/prm/pt/den", "generated MC p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/prm/pt/den", "generated MC #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/str/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/str/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/str/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/str/pt/den", "generated MC K^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/str/pt/den", "generated MC p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/str/pt/den", "generated MC #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/pos/mat/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pi/neg/mat/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/pos/mat/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/ka/neg/mat/pt/den", "generated MC K^{-}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/pos/mat/pt/den", "generated MC p", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
+      histos.add("MC/pr/neg/mat/pt/den", "generated MC #bar{p}", HistType::kTHnSparseD, {ptAxis, multAxis, dcaXyAxis});
       histos.add("MC/test/pi/pos/prm/pt/den", "generated MC #pi^{+}", HistType::kTHnSparseD, {ptAxis});
       histos.add("MC/test/pi/neg/prm/pt/den", "generated MC #pi^{-}", HistType::kTHnSparseD, {ptAxis});
       histos.add("MC/test/ka/pos/prm/pt/den", "generated MC K^{+}", HistType::kTHnSparseD, {ptAxis});
@@ -418,16 +418,15 @@ struct QCspectraTPC {
     }
   } // process_mc loop end
 using CollisionCandidateMCRec = soa::Join<aod::Collisions,  aod::McCollisionLabels, aod::EvSels, aod::CentFT0Cs>;
-void processTrackHistograms_MC(CollisionCandidateMCRec::iterator const& collision, soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA, aod::McTrackLabels, aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr,aod::TrackSelection> const& tracks, aod::McParticles const& mcParticles, aod::McCollisions const& mcCollisions)
+void processTrackHistograms_MC(CollisionCandidateMCRec::iterator const& collision, soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA, aod::McTrackLabels, aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr, aod::TrackSelection> const& tracks, aod::McParticles const& mcParticles, aod::McCollisions const& mcCollisions)
   {
-  const float multiplicity =collision.centFT0C();
+const float multiplicity = collision.centFT0C();
 for (auto& track : tracks) {
 
-      const auto& mcParticle = track.mcParticle();
- if (abs(track.eta()) > cfgCutEta) {
+const auto& mcParticle = track.mcParticle();
+if (abs(track.eta()) > cfgCutEta) {
         return;
       }
-
       if (track.tpcNClsCrossedRows() < minTPCNClsFound)
         continue;
       if (track.tpcCrossedRowsOverFindableCls() < minNCrossedRowsOverFindableClustersTPC)
@@ -440,67 +439,66 @@ for (auto& track : tracks) {
         continue;
       if (abs(track.dcaZ()) > cfgCutDCAZ)
         continue;
-//const float multiplicity = collision.centFT0C();
- if (mcParticle.isPhysicalPrimary()) {
+if (mcParticle.isPhysicalPrimary()) {
   //pions
   if (mcParticle.pdgCode() == 211) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pi/pos/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
- if (track.hasTOF()) {
- histos.fill(HIST("MC/pi/pos/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/pi/pos/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
+if (track.hasTOF()) {
+histos.fill(HIST("MC/pi/pos/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
- }
- if (mcParticle.pdgCode() == -211) {
+}
+if (mcParticle.pdgCode() == -211) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pi/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
- if (track.hasTOF()) {
- histos.fill(HIST("MC/pi/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/pi/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
+if (track.hasTOF()) {
+histos.fill(HIST("MC/pi/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
- }
- //kaons
+}
+//kaons
   if (mcParticle.pdgCode() == 321) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/ka/pos/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
- if (track.hasTOF()) {
- histos.fill(HIST("MC/ka/pos/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/ka/pos/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
+if (track.hasTOF()) {
+histos.fill(HIST("MC/ka/pos/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
- }
-   if (mcParticle.pdgCode() == -321) {
+}
+if (mcParticle.pdgCode() == -321) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/ka/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
- if (track.hasTOF()) {
- histos.fill(HIST("MC/ka/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/ka/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
+if (track.hasTOF()) {
+histos.fill(HIST("MC/ka/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
- }
+}
   //Protons
   if (mcParticle.pdgCode() == 2212) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pr/pos/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
- if (track.hasTOF()) {
- histos.fill(HIST("MC/pr/pos/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/pr/pos/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
+if (track.hasTOF()) {
+histos.fill(HIST("MC/pr/pos/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
- }
-   //Anti-Protons
+}
+//Anti-Protons
   if (mcParticle.pdgCode() == -2212) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pr/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
- if (track.hasTOF()) {
- histos.fill(HIST("MC/pr/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/pr/neg/prm/pt/num"), track.pt(), multiplicity, track.dcaXY());
+if (track.hasTOF()) {
+histos.fill(HIST("MC/pr/neg/prm/pt/numtof"), track.pt(), multiplicity, track.dcaXY());
   }
- }
- }// primaries
+}
+}// primaries
 if (!mcParticle.isPhysicalPrimary()) {// secondaries loop start
     if (mcParticle.pdgCode() == 211) {
       if (std::abs(mcParticle.y()) > cfgCutY) {
@@ -612,7 +610,7 @@ void processParticleHistograms_MC(CollisionCandidateMCRec::iterator const& colli
   {
 
 
-    const float multiplicity =collision.centFT0C();
+const float multiplicity = collision.centFT0C();
   for (auto& track : tracks) {
   const auto& mcParticle = track.mcParticle();
   if (mcParticle.isPhysicalPrimary()) {
@@ -621,40 +619,40 @@ void processParticleHistograms_MC(CollisionCandidateMCRec::iterator const& colli
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pi/pos/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
- }
-   if (mcParticle.pdgCode() == -211) {
+histos.fill(HIST("MC/pi/pos/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
+}
+if (mcParticle.pdgCode() == -211) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pi/neg/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
+histos.fill(HIST("MC/pi/neg/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
 
   }
- if (mcParticle.pdgCode() == 321) {
+if (mcParticle.pdgCode() == 321) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/ka/pos/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
- }
+histos.fill(HIST("MC/ka/pos/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
+}
   if (mcParticle.pdgCode() == -321) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/ka/neg/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
- }
+histos.fill(HIST("MC/ka/neg/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
+}
 
- if (mcParticle.pdgCode() == 2212) {
+if (mcParticle.pdgCode() == 2212) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pr/pos/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
- }
+histos.fill(HIST("MC/pr/pos/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
+}
   if (mcParticle.pdgCode() == -2212) {
     if (std::abs(mcParticle.y()) > cfgCutY) {
         return;
       }
- histos.fill(HIST("MC/pr/neg/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
- }
+histos.fill(HIST("MC/pr/neg/prm/pt/den"), mcParticle.pt(), multiplicity, track.dcaXY());
+}
 if (!mcParticle.isPhysicalPrimary()) {// secondaries loop start
     if (mcParticle.pdgCode() == 211) {
       if (std::abs(mcParticle.y()) > cfgCutY) {
@@ -768,7 +766,7 @@ if (!mcParticle.isPhysicalPrimary()) {// secondaries loop start
       }
     }
   } // process_mc loop end
- PROCESS_SWITCH(QCspectraTPC, processParticleGen, "process MC Generated tracks", true);
+PROCESS_SWITCH(QCspectraTPC, processParticleGen, "process MC Generated tracks", true);
 
 };
 
