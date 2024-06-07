@@ -853,7 +853,7 @@ struct tofSpectra {
         }
       }
     }
-    }
+  }
     if (!passesDCAxyCut(track)) {
       return;
     }
@@ -1997,7 +1997,6 @@ struct tofSpectra {
     }
   }
   PROCESS_SWITCH(tofSpectra, processMCgen, "process generated MC", false);
-
 }; // end of spectra task
 
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc) { return WorkflowSpec{adaptAnalysisTask<tofSpectra>(cfgc)}; }
