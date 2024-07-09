@@ -1896,7 +1896,6 @@ struct tofSpectra {
       if (absY > trkselOptions.cfgCutY) {
         continue;
       }
-
       // Fill histograms based on particle type
       switch (pdgCode) {
         case 2212:
