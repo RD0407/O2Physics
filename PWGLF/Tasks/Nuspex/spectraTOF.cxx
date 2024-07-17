@@ -64,6 +64,7 @@ struct tofSpectra {
     Configurable<bool> requireIsGoodZvtxFT0vsPV{"requireIsGoodZvtxFT0vsPV", false, "Remove TF border"};
     Configurable<bool> requireIsVertexITSTPC{"requireIsVertexITSTPC", false, "Remove TF border"};
     Configurable<bool> removeNoTimeFrameBorder{"removeNoTimeFrameBorder", false, "Remove TF border"};
+    Configurable<bool> requirekIsVertexTOFmatched{"requirekIsVertexTOFmatched", false, "Require requirekIsVertexTOFmatched"};
   } evselOptions;
 
   struct : ConfigurableGroup {
@@ -214,7 +215,8 @@ struct tofSpectra {
     const AxisSpec vtxZAxis{100, -20, 20, "Vtx_{z} (cm)"};
     const AxisSpec pAxis{binsOptions.binsPt, "#it{p} (GeV/#it{c})"};
     const AxisSpec ptAxis{binsOptions.binsPt, "#it{p}_{T} (GeV/#it{c})"};
-    const AxisSpec etaAxis{binsOptions.binsEta, "#eta"};
+    const AxisSpec etaAxis{binsOptions.binsEta, "#eta"};// binsnsigmaTPC
+    const AxisSpec nsigmaTPCAxis1{binsOptions.binsnsigmaTPC, "nsigmaTPC"};
     const AxisSpec impParamAxis{binsOptions.binsImpactParam, "Impact parameter"};
 
     AxisSpec multAxis{binsOptions.binsMultiplicity, "Undefined multiplicity estimator"};
@@ -262,15 +264,16 @@ struct tofSpectra {
     h->GetXaxis()->SetBinLabel(3, "INEL>1 (fraction)");
     h->GetXaxis()->SetBinLabel(4, "Ev. sel. passed");
     h->GetXaxis()->SetBinLabel(5, "NoITSROFrameBorder");
-    h->GetXaxis()->SetBinLabel(6, "NoSameBunchPileup");
-    h->GetXaxis()->SetBinLabel(7, "IsGoodZvtxFT0vsPV");
-    h->GetXaxis()->SetBinLabel(8, "IsVertexITSTPC");
-    h->GetXaxis()->SetBinLabel(9, "NoTimeFrameBorder");
-    h->GetXaxis()->SetBinLabel(10, "INEL>0 (fraction)");
-    h->GetXaxis()->SetBinLabel(11, "INEL>1 (fraction)");
-    h->GetXaxis()->SetBinLabel(12, "posZ passed");
-    h->GetXaxis()->SetBinLabel(13, evselOptions.cfgINELCut.value == 1 ? "INEL>0" : "INEL>0 (fraction)");
-    h->GetXaxis()->SetBinLabel(14, evselOptions.cfgINELCut.value == 2 ? "INEL>1" : "INEL>1 (fraction)");
+    h->GetXaxis()->SetBinLabel(6, "NoITSROFrameBorder");
+    h->GetXaxis()->SetBinLabel(7, "NoSameBunchPileup");
+    h->GetXaxis()->SetBinLabel(8, "IsGoodZvtxFT0vsPV");
+    h->GetXaxis()->SetBinLabel(9, "IsVertexITSTPC");
+    h->GetXaxis()->SetBinLabel(10, "NoTimeFrameBorder");
+    h->GetXaxis()->SetBinLabel(11, "INEL>0 (fraction)");
+    h->GetXaxis()->SetBinLabel(12, "INEL>1 (fraction)");
+    h->GetXaxis()->SetBinLabel(13, "posZ passed");
+    h->GetXaxis()->SetBinLabel(14, evselOptions.cfgINELCut.value == 1 ? "INEL>0" : "INEL>0 (fraction)");
+    h->GetXaxis()->SetBinLabel(15, evselOptions.cfgINELCut.value == 2 ? "INEL>1" : "INEL>1 (fraction)");
 
     h = histos.add<TH1>("tracksel", "tracksel", HistType::kTH1D, {{10, 0.5, 10.5}});
     h->GetXaxis()->SetBinLabel(1, "Tracks read");
@@ -307,6 +310,7 @@ struct tofSpectra {
       histos.add("Mult/PerBC/sel8/FT0M", "FT0M", HistType::kTH1D, {{binsOptions.binsMultiplicity, "Multiplicity FT0M"}});
       histos.add("Mult/PerBC/sel8/FT0A", "FT0A", HistType::kTH1D, {{binsOptions.binsMultiplicity, "Multiplicity FT0A"}});
       histos.add("Mult/PerBC/sel8/FT0C", "FT0C", HistType::kTH1D, {{binsOptions.binsMultiplicity, "Multiplicity FT0C"}});
+      histos.add("Mult/PerBC/sel8/FT0AvsFT0C", "FT0C", HistType::kTH2D, {{binsOptions.binsMultiplicity, "Multiplicity FT0A"}, {binsOptions.binsMultiplicity, "Multiplicity FT0C"}});
     }
     // histos.add("Mult/Tracklets", "MultTracklets", HistType::kTH1D, {{binsOptions.binsMultiplicity, "MultTracklets"}});
     histos.add("Mult/TPC", "MultTPC", HistType::kTH1D, {{binsOptions.binsMultiplicity, "MultTPC"}});
@@ -396,7 +400,58 @@ struct tofSpectra {
     histos.add("Data/neg/pt/its", "neg ITS", kTH1D, {ptAxis});
     histos.add("Data/pos/pt/tpc", "pos TPC", kTH1D, {ptAxis});
     histos.add("Data/neg/pt/tpc", "neg TPC", kTH1D, {ptAxis});
+    // Occupancy based plots 
+    if (doprocessOccupancy) {
+    histos.add("nsigmatpc/test/Occupancy_0To500/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To500/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To2000/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To2000/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To6000/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To6000/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To15000/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To15000/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To500/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To500/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To2000/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To2000/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To6000/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To6000/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To15000/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To15000/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To500/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To500/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To2000/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To2000/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To6000/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To6000/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To15000/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatpc/test/Occupancy_0To15000/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
 
+    histos.add("nsigmatof/test/Occupancy_0To500/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To500/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To2000/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To2000/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To6000/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To6000/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To15000/pos/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To15000/neg/pi", "occuppancy dependent pion", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To500/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To500/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To2000/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To2000/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To6000/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To6000/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To15000/pos/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To15000/neg/ka", "occuppancy dependent Kaon", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To500/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To500/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To2000/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To2000/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To6000/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To6000/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To15000/pos/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+    histos.add("nsigmatof/test/Occupancy_0To15000/neg/pr", "occuppancy dependent proton", kTH3D, {ptAxis, nsigmaTPCAxis1, multAxis});
+}
     if (doprocessMC) {
       histos.add("MC/fake/pos", "Fake positive tracks", kTH1D, {ptAxis});
       histos.add("MC/fake/neg", "Fake negative tracks", kTH1D, {ptAxis});
@@ -645,6 +700,8 @@ struct tofSpectra {
     histos.fill(HIST("Mult/PerBC/sel8/FT0M"), ft0.sumAmpA() + ft0.sumAmpC());
     histos.fill(HIST("Mult/PerBC/sel8/FT0A"), ft0.sumAmpA());
     histos.fill(HIST("Mult/PerBC/sel8/FT0C"), ft0.sumAmpC());
+
+    histos.fill(HIST("Mult/PerBC/sel8/FT0AvsFT0C"), ft0.sumAmpA(), ft0.sumAmpC());
 
   } // end of the process function
   PROCESS_SWITCH(tofSpectra, processBC, "Processor of BCs for the FT0 calibration", true);
@@ -932,57 +989,63 @@ struct tofSpectra {
         return false;
       }
     }
-    if (evselOptions.removeITSROFrameBorder && !collision.selection_bit(aod::evsel::kNoITSROFrameBorder)) {
+    if (evselOptions.requirekIsVertexTOFmatched && !collision.selection_bit(aod::evsel::kIsVertexTOFmatched)) {
       return false;
     }
     if constexpr (fillHistograms) {
       histos.fill(HIST("evsel"), 4.f);
     }
-    if (evselOptions.removeNoSameBunchPileup && !collision.selection_bit(aod::evsel::kNoSameBunchPileup)) {
+    if (evselOptions.removeITSROFrameBorder && !collision.selection_bit(aod::evsel::kNoITSROFrameBorder)) {
       return false;
     }
     if constexpr (fillHistograms) {
       histos.fill(HIST("evsel"), 5.f);
     }
-    if (evselOptions.requireIsGoodZvtxFT0vsPV && !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
+    if (evselOptions.removeNoSameBunchPileup && !collision.selection_bit(aod::evsel::kNoSameBunchPileup)) {
       return false;
     }
     if constexpr (fillHistograms) {
       histos.fill(HIST("evsel"), 6.f);
     }
-    if (evselOptions.requireIsVertexITSTPC && !collision.selection_bit(aod::evsel::kIsVertexITSTPC)) {
+    if (evselOptions.requireIsGoodZvtxFT0vsPV && !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
       return false;
     }
     if constexpr (fillHistograms) {
       histos.fill(HIST("evsel"), 7.f);
     }
-    if (evselOptions.removeNoTimeFrameBorder && !collision.selection_bit(aod::evsel::kNoTimeFrameBorder)) {
+    if (evselOptions.requireIsVertexITSTPC && !collision.selection_bit(aod::evsel::kIsVertexITSTPC)) {
       return false;
     }
     if constexpr (fillHistograms) {
       histos.fill(HIST("evsel"), 8.f);
     }
+    if (evselOptions.removeNoTimeFrameBorder && !collision.selection_bit(aod::evsel::kNoTimeFrameBorder)) {
+      return false;
+    }
     if constexpr (fillHistograms) {
       histos.fill(HIST("evsel"), 9.f);
+    }
+    if constexpr (fillHistograms) {
+      histos.fill(HIST("evsel"), 10.f);
       if (collision.isInelGt0()) {
-        histos.fill(HIST("evsel"), 10.f);
+        histos.fill(HIST("evsel"), 11.f);
       }
       if (collision.isInelGt1()) {
-        histos.fill(HIST("evsel"), 11.f);
+        histos.fill(HIST("evsel"), 12.f);
       }
     }
     if (abs(collision.posZ()) > evselOptions.cfgCutVertex) {
       return false;
     }
     if constexpr (fillHistograms) {
-      histos.fill(HIST("evsel"), 12.f);
+      histos.fill(HIST("evsel"), 13.f);
       if (collision.isInelGt0()) {
-        histos.fill(HIST("evsel"), 13.f);
+        histos.fill(HIST("evsel"), 14.f);
       } else if (evselOptions.cfgINELCut == 1) {
         return false;
       }
       if (collision.isInelGt1()) {
-        histos.fill(HIST("evsel"), 14.f);
+        histos.fill(HIST("evsel"), 15.f);
       } else if (evselOptions.cfgINELCut == 2) {
         return false;
       }
@@ -1245,8 +1308,120 @@ struct tofSpectra {
 
   using CollisionCandidates = soa::Join<aod::Collisions, aod::EvSels, aod::TPCMults, aod::PVMults, aod::MultZeqs, aod::CentFV0As, aod::CentFT0Ms, aod::CentFT0As, aod::CentFT0Cs>;
   using TrackCandidates = soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA,
-                                    aod::pidEvTimeFlags, aod::TrackSelection, aod::TOFSignal>;
-
+                                    aod::pidEvTimeFlags, aod::TrackSelection, aod::TOFSignal, aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr, aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr>;
+ //************************************************************************************************************
+  void processOccupancy(CollisionCandidates::iterator const& collision, TrackCandidates const& tracks)
+  {
+if (!isEventSelected<true, true>(collision)) {
+      return;
+    }
+    int occupancy = collision.trackOccupancyInTimeRange();
+    const float multiplicity = collision.centFT0C();
+    for (const auto& track : tracks) {
+      if (!isTrackSelected<true>(track)) {
+        continue;
+      }
+      const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);
+      const auto& nsigmaTPCKa = o2::aod::pidutils::tpcNSigma<3>(track);
+      const auto& nsigmaTPCPr = o2::aod::pidutils::tpcNSigma<4>(track);
+      const auto& nsigmaTOFPi = o2::aod::pidutils::tofNSigma<2>(track);
+      const auto& nsigmaTOFKa = o2::aod::pidutils::tofNSigma<3>(track);
+      const auto& nsigmaTOFPr = o2::aod::pidutils::tofNSigma<4>(track);      
+    if (occupancy > 0 && occupancy <500 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To500/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To500/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To500/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To500/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To500/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To500/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+      }
+     }
+     if (occupancy > 0 && occupancy <2000 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To2000/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To2000/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To2000/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To2000/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To2000/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To2000/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+      }
+     }
+     if (occupancy > 0 && occupancy <6000 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To6000/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To6000/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To6000/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To6000/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To6000/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To6000/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+      }
+     }
+     if (occupancy > 0 && occupancy <15000 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To15000/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To15000/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To15000/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To15000/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To15000/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity);
+    histos.fill(HIST("nsigmatpc/test/Occupancy_0To15000/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity);
+      }
+     }
+     if (!track.hasTOF()) {
+      return;
+    }
+    if (occupancy > 0 && occupancy <500 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To500/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To500/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To500/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To500/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To500/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To500/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+      }
+     }
+     if (occupancy > 0 && occupancy <2000 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To2000/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To2000/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To2000/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To2000/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To2000/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To2000/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+      }
+     }
+     if (occupancy > 0 && occupancy <6000 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To6000/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To6000/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To6000/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To6000/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To6000/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To6000/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+      }
+     }
+     if (occupancy > 0 && occupancy <15000 ) {
+    if(track.sign()>0){
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To15000/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To15000/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To15000/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+    } else {
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To15000/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To15000/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity);
+    histos.fill(HIST("nsigmatof/test/Occupancy_0To15000/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity);
+      }
+     }
+    }
+   }
+  PROCESS_SWITCH(tofSpectra, processOccupancy, "process Occupancy dependent plots", false);
+//************************************************************************************************************
   void processStandard(CollisionCandidates::iterator const& collision,
                        TrackCandidates const& tracks)
   {
@@ -1529,18 +1704,37 @@ struct tofSpectra {
 
     if (!mcParticle.isPhysicalPrimary()) {
       if (mcParticle.getProcess() == 4) {
-        histos.fill(HIST(hpt_num_str[i]), track.pt(), multiplicity, track.dcaXY());
+        if (includeCentralityMC) {
+          histos.fill(HIST(hpt_num_str[i]), track.pt(), multiplicity, track.dcaXY());
+        } else {
+          histos.fill(HIST(hpt_num_str[i]), track.pt(), multiplicity);
+        }
         if (track.hasTOF()) {
-          histos.fill(HIST(hpt_numtof_str[i]), track.pt(), multiplicity, track.dcaXY());
+          if (includeCentralityMC) {
+            histos.fill(HIST(hpt_numtof_str[i]), track.pt(), multiplicity, track.dcaXY());
+          } else {
+            histos.fill(HIST(hpt_numtof_str[i]), track.pt(), multiplicity);
+          }
         }
       } else {
-        histos.fill(HIST(hpt_num_mat[i]), track.pt(), multiplicity, track.dcaXY());
-        if (track.hasTOF()) {
-          histos.fill(HIST(hpt_numtof_mat[i]), track.pt(), multiplicity, track.dcaXY());
+        if (includeCentralityMC) {
+          histos.fill(HIST(hpt_num_mat[i]), track.pt(), multiplicity, track.dcaXY());
+          if (track.hasTOF()) {
+            histos.fill(HIST(hpt_numtof_mat[i]), track.pt(), multiplicity, track.dcaXY());
+          }
+        } else {
+          histos.fill(HIST(hpt_num_mat[i]), track.pt(), multiplicity);
+          if (track.hasTOF()) {
+            histos.fill(HIST(hpt_numtof_mat[i]), track.pt(), multiplicity);
+          }
         }
       }
     } else {
-      histos.fill(HIST(hpt_num_prm[i]), track.pt(), multiplicity, track.dcaXY());
+      if (includeCentralityMC) {
+        histos.fill(HIST(hpt_num_prm[i]), track.pt(), multiplicity, track.dcaXY());
+      } else {
+        histos.fill(HIST(hpt_num_prm[i]), track.pt(), multiplicity);
+      }
       if (track.hasTRD() && trkselOptions.lastRequiredTrdCluster > 0) {
         int lastLayer = 0;
         for (int l = 7; l >= 0; l--) {
@@ -1554,7 +1748,11 @@ struct tofSpectra {
         }
       }
       if (track.hasTOF()) {
-        histos.fill(HIST(hpt_numtof_prm[i]), track.pt(), multiplicity, track.dcaXY());
+        if (includeCentralityMC) {
+          histos.fill(HIST(hpt_numtof_prm[i]), track.pt(), multiplicity, track.dcaXY());
+        } else {
+          histos.fill(HIST(hpt_numtof_prm[i]), track.pt(), multiplicity);
+        }
         if (!(track.mcMask() & (1 << 11))) {
           if (includeCentralityMC) {
             histos.fill(HIST(hpt_numtofgoodmatch_prm[i]), track.pt(), multiplicity, track.eta()); // RD
@@ -1875,7 +2073,7 @@ struct tofSpectra {
     }
   }
   PROCESS_SWITCH(tofSpectra, processMCgen, "process generated MC", false);
-  void processMCgen_RecoEvs(GenMCCollisions const& mcCollisions, RecoMCCollisions const& collisions, aod::McParticles const& mcParticles)
+  void processMCgen_RecoEvs(GenMCCollisions const&, RecoMCCollisions const& collisions, aod::McParticles const& mcParticles)
   {
     for (const auto& collision : collisions) {
       if (!collision.has_mcCollision()) {
