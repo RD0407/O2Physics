@@ -402,19 +402,19 @@ struct tofSpectra {
     histos.add("Data/pos/pt/tpc", "pos TPC", kTH1D, {ptAxis});
     histos.add("Data/neg/pt/tpc", "neg TPC", kTH1D, {ptAxis});
     if (doprocessOccupancy) {
-histos.add("nsigmatpc/test_occupancy/pos/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatpc/test_occupancy/neg/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatpc/test_occupancy/pos/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatpc/test_occupancy/neg/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatpc/test_occupancy/pos/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatpc/test_occupancy/neg/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
+histos.add("nsigmatpc/test_occupancy/pos/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatpc/test_occupancy/neg/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatpc/test_occupancy/pos/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatpc/test_occupancy/neg/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatpc/test_occupancy/pos/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatpc/test_occupancy/neg/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
 
-histos.add("nsigmatof/test_occupancy/pos/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatof/test_occupancy/neg/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatof/test_occupancy/pos/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatof/test_occupancy/neg/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatof/test_occupancy/pos/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
-histos.add("nsigmatof/test_occupancy/neg/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, multAxis, occupancyAxis});
+histos.add("nsigmatof/test_occupancy/pos/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatof/test_occupancy/neg/pi", "occuppancy dependent pion", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatof/test_occupancy/pos/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatof/test_occupancy/neg/ka", "occuppancy dependent kaon", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatof/test_occupancy/pos/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
+histos.add("nsigmatof/test_occupancy/neg/pr", "occuppancy dependent proton", kTHnSparseD, {ptAxis, nsigmaTPCAxis1, {100, 0, 100, "Centrality FT0C"}, occupancyAxis});
     }
 
     if (doprocessMC) {
@@ -1307,7 +1307,7 @@ histos.fill(HIST("nsigmatof/test_occupancy/neg/pr"), track.pt(), nsigmaTOFPr, mu
 
   }// track
  }//process function
-PROCESS_SWITCH(tofSpectra, processOccupancy, "check for occupancy plots", true);
+PROCESS_SWITCH(tofSpectra, processOccupancy, "check for occupancy plots", false);
   void processStandard(CollisionCandidates::iterator const& collision,
                        TrackCandidates const& tracks)
   {
