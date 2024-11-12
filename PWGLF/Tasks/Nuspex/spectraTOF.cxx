@@ -38,6 +38,7 @@
 #include "PWGLF/DataModel/mcCentrality.h"
 #include "Common/Core/RecoDecay.h"
 #include "TPDGCode.h"
+#include <string>
 
 using namespace o2;
 using namespace o2::track;
