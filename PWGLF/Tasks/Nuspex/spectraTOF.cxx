@@ -131,7 +131,7 @@ struct tofSpectra {
   Configurable<bool> enableTPCTOFvsEtaHistograms{"enableTPCTOFvsEtaHistograms", false, "choose if produce TPC tof vs Eta"};
   Configurable<bool> includeCentralityMC{"includeCentralityMC", true, "choose if include Centrality to MC"};
   Configurable<bool> enableTPCTOFVsMult{"enableTPCTOFVsMult", false, "Produce TPC-TOF plots vs multiplicity"};
-  Configurable<bool> includeCentralityToTracks{"includeCentralityToTracks", false, "choose if include Centrality to tracks"};
+  Configurable<bool> includeCentralityToTracks{"includeCentralityToTracks", true, "choose if include Centrality to tracks"};
 
   // Histograms
   HistogramRegistry histos{"Histos", {}, OutputObjHandlingPolicy::AnalysisObject};
@@ -634,7 +634,6 @@ struct tofSpectra {
         }
         histos.add(hpt_den_prm_mcgoodev[i].data(), pTCharge[i], kTH2D, {ptAxis, multAxis});
         histos.add(hpt_den_prm_mcbadev[i].data(), pTCharge[i], kTH2D, {ptAxis, multAxis});
-
         const std::string cpName = Form("/%s/%s", (i < Np) ? "pos" : "neg", pN[i % Np]);
         if (enableDCAxyzHistograms) {
           hDcaXYZPrm[i] = histos.add<TH3>("dcaprm" + cpName, pTCharge[i], kTH3D, {ptAxis, dcaXyAxis, dcaZAxis});
@@ -1341,8 +1340,7 @@ if (track.sign() > 0) {
 if (track.hasITS() && track.hasTPC() && track.hasTOF()) {
             histos.fill(HIST("Data/cent/pos/pt/its_tpc_tof"), track.pt(), collision.centFT0C(), occupancy);
             }
-if (track.hasITS() && track.hasTOF()) {            
-            histos.fill(HIST("Data/cent/pos/pt/its_tof"), track.pt(), collision.centFT0C(), occupancy);
+if (track.hasITS() && track.hasTOF()) {            histos.fill(HIST("Data/cent/pos/pt/its_tof"), track.pt(), collision.centFT0C(), occupancy);
             }
             if (track.hasITS() && track.hasTPC()) {
             histos.fill(HIST("Data/cent/pos/pt/its_tpc"), track.pt(), collision.centFT0C(), occupancy);
@@ -2138,4 +2136,3 @@ if (track.hasITS() && track.hasTOF()) {
 }; // end of spectra task
 
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc) { return WorkflowSpec{adaptAnalysisTask<tofSpectra>(cfgc)}; }
-
