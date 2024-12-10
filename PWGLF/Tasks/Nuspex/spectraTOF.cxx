@@ -1329,7 +1329,7 @@ struct tofSpectra {
   using TrackCandidates = soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA,
                                     aod::pidEvTimeFlags, aod::TrackSelection, aod::TOFSignal>;
 
-       void processOccupancy(CollisionCandidates::iterator const& collision,
+  void processOccupancy(CollisionCandidates::iterator const& collision,
                         soa::Join<TrackCandidates,
                                   aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr,
                                   aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
@@ -1357,22 +1357,22 @@ struct tofSpectra {
         bool isTOFPion = fabs(nsigmaTOFPi) < 10;
         bool isTOFKaon = fabs(nsigmaTOFKa) < 10;
         bool isTOFProton = fabs(nsigmaTOFPr) < 10;
-        if ( isTPCPion) {
-        if(std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) continue;
+        if (isTPCPion) {
+        if (std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) continue;
             if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatpc/test_occupancy/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
             } else {
                 histos.fill(HIST("nsigmatpc/test_occupancy/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
             }
         } else if ( isTPCKaon) {
-        if(std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) continue;
+        if (std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) continue;
             if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatpc/test_occupancy/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
             } else {
                 histos.fill(HIST("nsigmatpc/test_occupancy/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
             }
-        }  else if ( isTPCProton) {
-        if(std::abs(track.rapidity(PID::getMass(4)) >=trkselOptions.cfgCutY)) continue;
+        }  else if (isTPCProton) {
+        if (std::abs(track.rapidity(PID::getMass(4)) >=trkselOptions.cfgCutY)) continue;
             if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatpc/test_occupancy/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
             } else {
@@ -1380,22 +1380,22 @@ struct tofSpectra {
             }
           }
       if (track.hasTOF()) {
-      if ( isTOFPion) {
-        if(std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) continue;
+      if (isTOFPion) {
+        if (std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) continue;
             if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatof/test_occupancy/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
             } else {
                 histos.fill(HIST("nsigmatof/test_occupancy/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
             }
-        } else if ( isTOFKaon) {
-        if(std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) continue;
+        } else if (isTOFKaon) {
+        if (std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) continue;
             if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatof/test_occupancy/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
             } else {
                 histos.fill(HIST("nsigmatof/test_occupancy/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
             }
-        }  else if ( isTOFProton) {
-        if(std::abs(track.rapidity(PID::getMass(4)) >= trkselOptions.cfgCutY)) continue;
+        }  else if (isTOFProton) {
+        if (std::abs(track.rapidity(PID::getMass(4)) >= trkselOptions.cfgCutY)) continue;
             if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatof/test_occupancy/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
             } else {
@@ -1405,7 +1405,7 @@ struct tofSpectra {
      }//TOF
   }  // track
   } // process function
-  PROCESS_SWITCH(tofSpectra, processDerived, "Derived data processor", false);
+  PROCESS_SWITCH(tofSpectra, processOccupancy, "check for occupancy plots", false);
 
 #define makeProcessFunction(processorName, inputPid, particleId, isFull, tofTable, tpcTable)   \
   void process##processorName##inputPid(CollisionCandidates::iterator const& collision,        \
