@@ -1350,7 +1350,6 @@ struct tofSpectra {
       const auto& nsigmaTOFPi = o2::aod::pidutils::tofNSigma<2>(track);
       const auto& nsigmaTOFKa = o2::aod::pidutils::tofNSigma<3>(track);
       const auto& nsigmaTOFPr = o2::aod::pidutils::tofNSigma<4>(track);
-      
       // Apply PID cuts
         bool isTPCPion = fabs(nsigmaTPCPi) < 10;
         bool isTPCKaon = fabs(nsigmaTPCKa) < 10;
