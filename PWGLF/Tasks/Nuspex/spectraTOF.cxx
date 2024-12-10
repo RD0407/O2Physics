@@ -1329,7 +1329,7 @@ struct tofSpectra {
   using TrackCandidates = soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA,
                                     aod::pidEvTimeFlags, aod::TrackSelection, aod::TOFSignal>;
 
-      void processOccupancy(CollisionCandidates::iterator const& collision,
+       void processOccupancy(CollisionCandidates::iterator const& collision,
                         soa::Join<TrackCandidates,
                                   aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr,
                                   aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
@@ -1341,7 +1341,7 @@ struct tofSpectra {
     const float multiplicity = getMultiplicity(collision);
     histos.fill(HIST("nsigmatpc/test_occupancy/Mult_vs_Occupancy"), multiplicity, occupancy);
     for (const auto& track : tracks) {
-      if(!isTrackSelected<true>(track, collision)) {
+      if (!isTrackSelected<true>(track, collision)) {
         continue;
       }
       const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);
@@ -1350,6 +1350,7 @@ struct tofSpectra {
       const auto& nsigmaTOFPi = o2::aod::pidutils::tofNSigma<2>(track);
       const auto& nsigmaTOFKa = o2::aod::pidutils::tofNSigma<3>(track);
       const auto& nsigmaTOFPr = o2::aod::pidutils::tofNSigma<4>(track);
+      
       // Apply PID cuts
         bool isTPCPion = fabs(nsigmaTPCPi) < 10;
         bool isTPCKaon = fabs(nsigmaTPCKa) < 10;
@@ -1357,91 +1358,54 @@ struct tofSpectra {
         bool isTOFPion = fabs(nsigmaTOFPi) < 10;
         bool isTOFKaon = fabs(nsigmaTOFKa) < 10;
         bool isTOFProton = fabs(nsigmaTOFPr) < 10;
-        if(isTPCPion) {
-        if(std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)){continue;}
-            if(track.sign() > 0) {
+        if ( isTPCPion) {
+        if(std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) continue;
+            if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatpc/test_occupancy/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
             } else {
                 histos.fill(HIST("nsigmatpc/test_occupancy/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
             }
-        }else if(isTPCKaon) {
-        if(std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)){continue;}
-            if(track.sign() > 0) {
+        } else if ( isTPCKaon) {
+        if(std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) continue;
+            if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatpc/test_occupancy/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
-            }else{
+            } else {
                 histos.fill(HIST("nsigmatpc/test_occupancy/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
             }
-        }else if(isTPCProton) {
-        if(std::abs(track.rapidity(PID::getMass(4)) >=trkselOptions.cfgCutY)){continue;}
-            if(track.sign() > 0) {
+        }  else if ( isTPCProton) {
+        if(std::abs(track.rapidity(PID::getMass(4)) >=trkselOptions.cfgCutY)) continue;
+            if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatpc/test_occupancy/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
-            }else{
+            } else {
                 histos.fill(HIST("nsigmatpc/test_occupancy/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
             }
           }
-      if(track.hasTOF()) {
-      if(isTOFPion) {
-        if(std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)){continue;}
-            if(track.sign() > 0) {
+      if (track.hasTOF()) {
+      if ( isTOFPion) {
+        if(std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) continue;
+            if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatof/test_occupancy/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
-            }else {
+            } else {
                 histos.fill(HIST("nsigmatof/test_occupancy/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
             }
-        }else if (isTOFKaon) {
-        if(std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)){continue;}
-            if(track.sign() > 0) {
+        } else if ( isTOFKaon) {
+        if(std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) continue;
+            if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatof/test_occupancy/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
-            }else {
+            } else {
                 histos.fill(HIST("nsigmatof/test_occupancy/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
             }
-        }else if (isTOFProton) {
-        if(std::abs(track.rapidity(PID::getMass(4)) >= trkselOptions.cfgCutY)){continue;}
-            if(track.sign() > 0) {
+        }  else if ( isTOFProton) {
+        if(std::abs(track.rapidity(PID::getMass(4)) >= trkselOptions.cfgCutY)) continue;
+            if (track.sign() > 0) {
                 histos.fill(HIST("nsigmatof/test_occupancy/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
-            }else {
+            } else {
                 histos.fill(HIST("nsigmatof/test_occupancy/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
             }
           }
      }//TOF
   }  // track
   } // process function
-  PROCESS_SWITCH(tofSpectra, processOccupancy, "check for occupancy plots", false);
-
-  void processStandard(CollisionCandidates::iterator const& collision,
-                       TrackCandidates const& tracks)
-  {
-    if (!isEventSelected<true, true>(collision)) {
-      return;
-    }
-    hMultiplicityvsPercentile->Fill(getMultiplicity(collision), collision.multNTracksPV());
-    for (const auto& track : tracks) {
-      if (!isTrackSelected<true>(track, collision)) {
-        continue;
-      }
-    }
-  } // end of the process function
-  PROCESS_SWITCH(tofSpectra, processStandard, "Standard processor from AO2D", true);
-
-  Preslice<aod::SpTracks> spPerCol = aod::spectra::collisionId;
-  SliceCache cacheTrk;
-  void processDerived(aod::SpColls const& collisions,
-                      aod::SpTracks const& tracks)
-  {
-    for (const auto& collision : collisions) {
-      if (!isEventSelected<true, true>(collision)) {
-        return;
-      }
-      const auto& tracksInCollision = tracks.sliceByCached(aod::spectra::collisionId, collision.globalIndex(), cacheTrk);
-      for (const auto& track : tracksInCollision) {
-        if (!isTrackSelected<true>(track, collision)) {
-          continue;
-        }
-        fillParticleHistos<false, PID::Pion>(track, collision);
-        fillParticleHistos<false, PID::Kaon>(track, collision);
-        fillParticleHistos<false, PID::Proton>(track, collision);
-      }
-    }
-  } // end of the process function
   PROCESS_SWITCH(tofSpectra, processDerived, "Derived data processor", false);
 
 #define makeProcessFunction(processorName, inputPid, particleId, isFull, tofTable, tpcTable)   \
