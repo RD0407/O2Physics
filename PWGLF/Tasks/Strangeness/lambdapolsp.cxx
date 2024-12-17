@@ -77,7 +77,7 @@ struct lambdapolsp {
   // Configurable<bool> mycut{"mycut", false, "select tracks based on my cuts"};
   Configurable<bool> tofhit{"tofhit", true, "select tracks based on tof hit"};
   Configurable<bool> globalpt{"globalpt", true, "select tracks based on pt global vs tpc"};
-  Configurable<bool> usefourvectormass{"usefourvectormass", true, "select invariant mass based on four vector"};
+  Configurable<bool> useglobal{"useglobal", true, "flag to use global vs v0 momentum"};
   Configurable<bool> checksign{"checksign", true, "check sign of daughter tracks"};
   Configurable<int> useprofile{"useprofile", 3, "flag to select profile vs Sparse"};
   Configurable<int> QxyNbins{"QxyNbins", 100, "Number of bins in QxQy histograms"};
@@ -100,8 +100,6 @@ struct lambdapolsp {
   Configurable<int> cfgTPCcluster{"cfgTPCcluster", 70, "Number of TPC cluster"};
   Configurable<bool> isPVContributor{"isPVContributor", true, "is PV contributor"};
   Configurable<bool> checkwithpub{"checkwithpub", true, "checking results with published"};
-  Configurable<bool> rejectmisident{"rejectmisident", true, "rejecting misidentification"};
-  Configurable<bool> useTPCTOF{"useTPCTOF", true, "flag to use TPC and TOF"};
 
   // Configs for V0
   Configurable<float> ConfV0PtMin{"ConfV0PtMin", 0.f, "Minimum transverse momentum of V0"};
@@ -121,8 +119,6 @@ struct lambdapolsp {
   Configurable<float> ConfDaughTPCnclsMin{"ConfDaughTPCnclsMin", 50.f, "V0 Daugh sel: Min. nCls TPC"};
   Configurable<double> ConfDaughDCAMin{"ConfDaughDCAMin", 0.08f, "V0 Daugh sel:  Max. DCA Daugh to PV (cm)"};
   Configurable<float> ConfDaughPIDCuts{"ConfDaughPIDCuts", 3, "PID selections for Lambda daughters"};
-  Configurable<float> ConfDaughPIDTPCCuts{"ConfDaughPIDTPCCuts", 3, "PID selections for Lambda daughters in TPC"};
-  Configurable<float> ConfDaughPIDTOFCuts{"ConfDaughPIDTOFCuts", 3, "PID selections for Lambda daughters in TOF"};
 
   Configurable<int> CentNbins{"CentNbins", 16, "Number of bins in cent histograms"};
   Configurable<float> lbinCent{"lbinCent", 0.0, "lower bin value in cent histograms"};
@@ -414,37 +410,11 @@ struct lambdapolsp {
       return false;
       }*/
 
-    if (useTPCTOF) {
-      if (track.pt() < 0.5 && pid == 0 && TMath::Abs(track.tpcNSigmaPr()) > ConfDaughPIDCuts) {
-        return false;
-      }
-      if (track.pt() < 0.5 && pid == 1 && TMath::Abs(track.tpcNSigmaPi()) > ConfDaughPIDCuts) {
-        return false;
-      }
-      if (track.hasTOF()) {
-        if (track.pt() > 0.5 && pid == 0 && TMath::Abs(track.tpcNSigmaPr()) > ConfDaughPIDTPCCuts && TMath::Abs(track.tofNSigmaPr()) > ConfDaughPIDTOFCuts) {
-          return false;
-        }
-        if (track.pt() > 0.5 && pid == 1 && TMath::Abs(track.tpcNSigmaPi()) > ConfDaughPIDTPCCuts && TMath::Abs(track.tofNSigmaPi()) > ConfDaughPIDTOFCuts) {
-          return false;
-        }
-      }
-    } else {
-      if (pid == 0 && TMath::Abs(track.tpcNSigmaPr()) > ConfDaughPIDCuts) {
-        return false;
-      }
-      if (pid == 1 && TMath::Abs(track.tpcNSigmaPi()) > ConfDaughPIDCuts) {
-        return false;
-      }
-      // for misidentification
-      if (rejectmisident) {
-        if (pid == 0 && TMath::Abs(track.tpcNSigmaPi()) < 3.0) {
-          return false;
-        }
-        if (pid == 1 && TMath::Abs(track.tpcNSigmaPr()) < 3.0) {
-          return false;
-        }
-      }
+    if (pid == 0 && TMath::Abs(track.tpcNSigmaPr()) > ConfDaughPIDCuts) {
+      return false;
+    }
+    if (pid == 1 && TMath::Abs(track.tpcNSigmaPi()) > ConfDaughPIDCuts) {
+      return false;
     }
 
     if (pid == 0 && pt < cfgDaughPrPt) {
@@ -487,7 +457,8 @@ struct lambdapolsp {
 
   using EventCandidates = soa::Filtered<soa::Join<aod::Collisions, aod::EvSels, aod::FT0Mults, aod::FV0Mults, aod::TPCMults, aod::CentFV0As, aod::CentFT0Ms, aod::CentFT0Cs, aod::CentFT0As, aod::SPCalibrationTables, aod::Mults>>;
   // using AllTrackCandidates = soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA, aod::TrackSelection, aod::pidTPCFullPi, aod::pidTPCFullPr>;
-  using AllTrackCandidates = soa::Filtered<soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA, aod::TrackSelection, aod::pidTPCFullPi, aod::pidTPCFullPr, aod::pidTPCFullKa, aod::pidTOFFullPi, aod::pidTOFFullPr>>;
+  // using AllTrackCandidates = soa::Filtered<soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA, aod::TrackSelection, aod::pidTPCFullPi, aod::pidTPCFullPr, aod::pidTPCFullKa, aod::pidTOFFullPi, aod::pidTOFFullPr>>;
+  using AllTrackCandidates = soa::Filtered<soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA, aod::TrackSelection, aod::pidTPCFullPi, aod::pidTPCFullPr, aod::pidTPCFullKa>>;
   using ResoV0s = aod::V0Datas;
 
   // void processData(EventCandidates::iterator const& collision, AllTrackCandidates const&, ResoV0s const& V0s, aod::BCs const&)
@@ -690,15 +661,24 @@ struct lambdapolsp {
         }
 
         if (LambdaTag) {
-          Proton = ROOT::Math::PxPyPzMVector(postrack.px(), postrack.py(), postrack.pz(), massPr);
-          Pion = ROOT::Math::PxPyPzMVector(negtrack.px(), negtrack.py(), negtrack.pz(), massPi);
+          if (useglobal) {
+            Proton = ROOT::Math::PxPyPzMVector(postrack.px(), postrack.py(), postrack.pz(), massPr);
+            Pion = ROOT::Math::PxPyPzMVector(negtrack.px(), negtrack.py(), negtrack.pz(), massPi);
+          } else {
+            Proton = ROOT::Math::PxPyPzMVector(v0.pxpos(), v0.pypos(), v0.pzpos(), massPr);
+            Pion = ROOT::Math::PxPyPzMVector(v0.pxneg(), v0.pyneg(), v0.pzneg(), massPi);
+          }
         }
         if (aLambdaTag) {
-          Proton = ROOT::Math::PxPyPzMVector(negtrack.px(), negtrack.py(), negtrack.pz(), massPr);
-          Pion = ROOT::Math::PxPyPzMVector(postrack.px(), postrack.py(), postrack.pz(), massPi);
+          if (useglobal) {
+            Proton = ROOT::Math::PxPyPzMVector(negtrack.px(), negtrack.py(), negtrack.pz(), massPr);
+            Pion = ROOT::Math::PxPyPzMVector(postrack.px(), postrack.py(), postrack.pz(), massPi);
+          } else {
+            Proton = ROOT::Math::PxPyPzMVector(v0.pxneg(), v0.pyneg(), v0.pzneg(), massPr);
+            Pion = ROOT::Math::PxPyPzMVector(v0.pxpos(), v0.pypos(), v0.pzpos(), massPi);
+          }
         }
         Lambda = Proton + Pion;
-        Lambdacopy = Proton + Pion;
         Lambda.SetM(massLambda);
 
         ROOT::Math::Boost boost{Lambda.BoostToCM()};
@@ -733,15 +713,9 @@ struct lambdapolsp {
         auto candeta = 0.0;
 
         if (LambdaTag) {
-          if (usefourvectormass) {
-            candmass = Lambdacopy.M();
-            candpt = Lambdacopy.Pt();
-            candeta = Lambdacopy.Eta();
-          } else {
-            candmass = v0.mLambda();
-            candpt = v0.pt();
-            candeta = v0.eta();
-          }
+          candmass = v0.mLambda();
+          candpt = v0.pt();
+          candeta = v0.eta();
 
           histos.fill(HIST("hSparseLambdaPolA"), candmass, candpt, candeta, PolA, centrality);
           histos.fill(HIST("hSparseLambdaPolC"), candmass, candpt, candeta, PolC, centrality);
@@ -753,15 +727,9 @@ struct lambdapolsp {
         }
 
         if (aLambdaTag) {
-          if (usefourvectormass) {
-            candmass = Lambdacopy.M();
-            candpt = Lambdacopy.Pt();
-            candeta = Lambdacopy.Eta();
-          } else {
-            candmass = v0.mAntiLambda();
-            candpt = v0.pt();
-            candeta = v0.eta();
-          }
+          candmass = v0.mAntiLambda();
+          candpt = v0.pt();
+          candeta = v0.eta();
 
           histos.fill(HIST("hSparseAntiLambdaPolA"), candmass, candpt, candeta, PolA, centrality);
           histos.fill(HIST("hSparseAntiLambdaPolC"), candmass, candpt, candeta, PolC, centrality);
