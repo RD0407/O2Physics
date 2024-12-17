@@ -1333,90 +1333,99 @@ struct tofSpectra {
                         soa::Join<TrackCandidates,
                                   aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr,
                                   aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
-  {
-    if (!isEventSelected<true, true>(collision)) {
-      return;
+{
+    // Event selection criteria
+    if (!collision.sel8() ||
+        std::abs(collision.posZ()) > 10 ||
+        !collision.selection_bit(aod::evsel::kNoITSROFrameBorder) ||
+        !collision.selection_bit(aod::evsel::kNoTimeFrameBorder) ||
+        !collision.selection_bit(aod::evsel::kNoSameBunchPileup) ||
+        !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
+        return; 
     }
+
+    histos.fill(HIST("test_occupancy/event/vertexz"), collision.posZ());
+
+    // Multiplicity and occupancy
     int occupancy = collision.trackOccupancyInTimeRange();
     const float multiplicity = getMultiplicity(collision);
     histos.fill(HIST("nsigmatpc/test_occupancy/Mult_vs_Occupancy"), multiplicity, occupancy);
+
+    int tpcCount = 0, tofCount = 0;
+
     for (const auto& track : tracks) {
-      if (!isTrackSelected<true>(track, collision)) {
-        continue;
-      }
-      const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);
-      const auto& nsigmaTPCKa = track.tpcNSigmaKa(); // o2::aod::pidutils::tpcNSigma<3>(track);
-      const auto& nsigmaTPCPr = o2::aod::pidutils::tpcNSigma<4>(track);
-      const auto& nsigmaTOFPi = o2::aod::pidutils::tofNSigma<2>(track);
-      const auto& nsigmaTOFKa = o2::aod::pidutils::tofNSigma<3>(track);
-      const auto& nsigmaTOFPr = o2::aod::pidutils::tofNSigma<4>(track);
-      // Apply PID cuts
-      bool isTPCPion = fabs(nsigmaTPCPi) < 10;
-      bool isTPCKaon = fabs(nsigmaTPCKa) < 10;
-      bool isTPCProton = fabs(nsigmaTPCPr) < 10;
-      bool isTOFPion = fabs(nsigmaTOFPi) < 10;
-      bool isTOFKaon = fabs(nsigmaTOFKa) < 10;
-      bool isTOFProton = fabs(nsigmaTOFPr) < 10;
-      if (isTPCPion) {
-        if (std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) {
-          continue;
+        // Track selection criteria
+        if (track.tpcNClsCrossedRows() < 70 || track.tpcChi2NCl() > 4 || track.tpcChi2NCl() < 0.5 || 
+            track.itsChi2NCl() > 36 || std::abs(track.dcaXY()) > 0.05 || std::abs(track.dcaZ()) > 2.0 || 
+            std::abs(track.eta()) > 0.8 || track.tpcCrossedRowsOverFindableCls() < 0.8 || track.tpcNClsFound() < 100 ||
+            !o2::aod::track::TPCrefit || !o2::aod::track::ITSrefit) {
+            continue;    
         }
-        if (track.sign() > 0) {
-          histos.fill(HIST("nsigmatpc/test_occupancy/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
-        } else {
-          histos.fill(HIST("nsigmatpc/test_occupancy/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
+        const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);;
+        const auto& nsigmaTPCKa = o2::aod::pidutils::tpcNSigma<3>(track);
+        const auto& nsigmaTPCPr = o2::aod::pidutils::tpcNSigma<4>(track);
+
+        bool isTPCPion = fabs(nsigmaTPCPi) < 10;
+        bool isTPCKaon = fabs(nsigmaTPCKa) < 10;
+        bool isTPCProton = fabs(nsigmaTPCPr) < 10;
+
+        const auto& nsigmaTOFPi = o2::aod::pidutils::tofNSigma<2>(track);
+        const auto& nsigmaTOFKa = o2::aod::pidutils::tofNSigma<3>(track);
+        const auto& nsigmaTOFPr = o2::aod::pidutils::tofNSigma<4>(track);
+
+        bool isTOFPion = track.hasTOF() && fabs(nsigmaTOFPi) < 10;
+        bool isTOFKaon = track.hasTOF() && fabs(nsigmaTOFKa) < 10;
+        bool isTOFProton = track.hasTOF() && fabs(nsigmaTOFPr) < 10;
+
+        // Apply rapidity cut for identified particles
+        if (isTPCPion && std::abs(track.rapidity(PID::getMass(2))) < trkselOptions.cfgCutY) {
+            tpcCount++;
+            if (track.sign() > 0) {
+                histos.fill(HIST("nsigmatpc/test_occupancy/pos/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
+            } else {
+                histos.fill(HIST("nsigmatpc/test_occupancy/neg/pi"), track.pt(), nsigmaTPCPi, multiplicity, occupancy);
+            }
+        } else if (isTPCKaon && std::abs(track.rapidity(PID::getMass(3))) < trkselOptions.cfgCutY) {
+            tpcCount++;
+            if (track.sign() > 0) {
+                histos.fill(HIST("nsigmatpc/test_occupancy/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
+            } else {
+                histos.fill(HIST("nsigmatpc/test_occupancy/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
+            }
+        } else if (isTPCProton && std::abs(track.rapidity(PID::getMass(4))) < trkselOptions.cfgCutY) {
+            tpcCount++;
+            if (track.sign() > 0) {
+                histos.fill(HIST("nsigmatpc/test_occupancy/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
+            } else {
+                histos.fill(HIST("nsigmatpc/test_occupancy/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
+            }
         }
-      } else if (isTPCKaon) {
-        if (std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) {
-          continue;
+
+        // TOF PID histograms
+        if (isTOFPion && std::abs(track.rapidity(PID::getMass(2))) < trkselOptions.cfgCutY) {
+            tofCount++;
+            if (track.sign() > 0) {
+                histos.fill(HIST("nsigmatof/test_occupancy/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
+            } else {
+                histos.fill(HIST("nsigmatof/test_occupancy/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
+            }
+        } else if (isTOFKaon && std::abs(track.rapidity(PID::getMass(3))) < trkselOptions.cfgCutY) {
+            tofCount++;
+            if (track.sign() > 0) {
+                histos.fill(HIST("nsigmatof/test_occupancy/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
+            } else {
+                histos.fill(HIST("nsigmatof/test_occupancy/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
+            }
+        } else if (isTOFProton && std::abs(track.rapidity(PID::getMass(4))) < trkselOptions.cfgCutY) {
+            tofCount++;
+            if (track.sign() > 0) {
+                histos.fill(HIST("nsigmatof/test_occupancy/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
+            } else {
+                histos.fill(HIST("nsigmatof/test_occupancy/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
+            }
         }
-        if (track.sign() > 0) {
-          histos.fill(HIST("nsigmatpc/test_occupancy/pos/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
-        } else {
-          histos.fill(HIST("nsigmatpc/test_occupancy/neg/ka"), track.pt(), nsigmaTPCKa, multiplicity, occupancy);
-        }
-      } else if (isTPCProton) {
-        if (std::abs(track.rapidity(PID::getMass(4)) >= trkselOptions.cfgCutY)) {
-          continue;
-        }
-        if (track.sign() > 0) {
-          histos.fill(HIST("nsigmatpc/test_occupancy/pos/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
-        } else {
-          histos.fill(HIST("nsigmatpc/test_occupancy/neg/pr"), track.pt(), nsigmaTPCPr, multiplicity, occupancy);
-        }
-      }
-      if (track.hasTOF()) {
-        if (isTOFPion) {
-          if (std::abs(track.rapidity(PID::getMass(2)) >= trkselOptions.cfgCutY)) {
-            continue;
-          }
-          if (track.sign() > 0) {
-            histos.fill(HIST("nsigmatof/test_occupancy/pos/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
-          } else {
-            histos.fill(HIST("nsigmatof/test_occupancy/neg/pi"), track.pt(), nsigmaTOFPi, multiplicity, occupancy);
-          }
-        } else if (isTOFKaon) {
-          if (std::abs(track.rapidity(PID::getMass(3)) >= trkselOptions.cfgCutY)) {
-            continue;
-          }
-          if (track.sign() > 0) {
-            histos.fill(HIST("nsigmatof/test_occupancy/pos/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
-          } else {
-            histos.fill(HIST("nsigmatof/test_occupancy/neg/ka"), track.pt(), nsigmaTOFKa, multiplicity, occupancy);
-          }
-        } else if (isTOFProton) {
-          if (std::abs(track.rapidity(PID::getMass(4)) >= trkselOptions.cfgCutY)) {
-            continue;
-          }
-          if (track.sign() > 0) {
-            histos.fill(HIST("nsigmatof/test_occupancy/pos/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
-          } else {
-            histos.fill(HIST("nsigmatof/test_occupancy/neg/pr"), track.pt(), nsigmaTOFPr, multiplicity, occupancy);
-          }
-        }
-      } // TOF
-    } // track
-  } // process function
+    }
+}
   PROCESS_SWITCH(tofSpectra, processOccupancy, "check for occupancy plots", false);
 
 #define makeProcessFunction(processorName, inputPid, particleId, isFull, tofTable, tpcTable)   \
