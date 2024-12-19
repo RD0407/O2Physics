@@ -1329,21 +1329,19 @@ struct tofSpectra {
   using TrackCandidates = soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA,
                                     aod::pidEvTimeFlags, aod::TrackSelection, aod::TOFSignal>;
 
-  void processOccupancy(CollisionCandidates::iterator const& collision,
-                        soa::Join<TrackCandidates,
-                                  aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr,
-                                  aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
+ void processOccupancy(CollisionCandidates::iterator const& collision,
+                      soa::Join<TrackCandidates,
+                                aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr,
+                                aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
 {
     // Event selection criteria
-    if (!collision.sel8() ||
-        std::abs(collision.posZ()) > 10 ||
+    if (!collision.sel8() || std::abs(collision.posZ()) > 10 || 
         !collision.selection_bit(aod::evsel::kNoITSROFrameBorder) ||
         !collision.selection_bit(aod::evsel::kNoTimeFrameBorder) ||
         !collision.selection_bit(aod::evsel::kNoSameBunchPileup) ||
         !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
-        return; 
+        return;
     }
-
     histos.fill(HIST("test_occupancy/event/vertexz"), collision.posZ());
 
     // Multiplicity and occupancy
@@ -1359,23 +1357,23 @@ struct tofSpectra {
             track.itsChi2NCl() > 36 || std::abs(track.dcaXY()) > 0.05 || std::abs(track.dcaZ()) > 2.0 || 
             std::abs(track.eta()) > 0.8 || track.tpcCrossedRowsOverFindableCls() < 0.8 || track.tpcNClsFound() < 100 ||
             !o2::aod::track::TPCrefit || !o2::aod::track::ITSrefit) {
-            continue;    
+            continue;
         }
-        const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);;
+        const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);
         const auto& nsigmaTPCKa = o2::aod::pidutils::tpcNSigma<3>(track);
         const auto& nsigmaTPCPr = o2::aod::pidutils::tpcNSigma<4>(track);
 
-        bool isTPCPion = fabs(nsigmaTPCPi) < 10;
-        bool isTPCKaon = fabs(nsigmaTPCKa) < 10;
-        bool isTPCProton = fabs(nsigmaTPCPr) < 10;
+        bool isTPCPion = std::abs(nsigmaTPCPi) < 10;
+        bool isTPCKaon = std::abs(nsigmaTPCKa) < 10;
+        bool isTPCProton = std::abs(nsigmaTPCPr) < 10;
 
         const auto& nsigmaTOFPi = o2::aod::pidutils::tofNSigma<2>(track);
         const auto& nsigmaTOFKa = o2::aod::pidutils::tofNSigma<3>(track);
         const auto& nsigmaTOFPr = o2::aod::pidutils::tofNSigma<4>(track);
 
-        bool isTOFPion = track.hasTOF() && fabs(nsigmaTOFPi) < 10;
-        bool isTOFKaon = track.hasTOF() && fabs(nsigmaTOFKa) < 10;
-        bool isTOFProton = track.hasTOF() && fabs(nsigmaTOFPr) < 10;
+        bool isTOFPion = track.hasTOF() && std::abs(nsigmaTOFPi) < 10;
+        bool isTOFKaon = track.hasTOF() && std::abs(nsigmaTOFKa) < 10;
+        bool isTOFProton = track.hasTOF() && std::abs(nsigmaTOFPr) < 10;
 
         // Apply rapidity cut for identified particles
         if (isTPCPion && std::abs(track.rapidity(PID::getMass(2))) < trkselOptions.cfgCutY) {
