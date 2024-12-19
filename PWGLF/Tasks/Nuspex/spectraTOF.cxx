@@ -1329,10 +1329,7 @@ struct tofSpectra {
   using TrackCandidates = soa::Join<aod::Tracks, aod::TracksExtra, aod::TracksDCA,
                                     aod::pidEvTimeFlags, aod::TrackSelection, aod::TOFSignal>;
 
- void processOccupancy(CollisionCandidates::iterator const& collision, 
-                      soa::Join<TrackCandidates, 
-                                aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr, 
-                                aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
+ void processOccupancy(CollisionCandidates::iterator const& collision, soa::Join<TrackCandidates, aod::pidTPCFullPi, aod::pidTPCFullKa, aod::pidTPCFullPr, aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
 {
     // Event selection criteria
     if (!collision.sel8() || std::abs(collision.posZ()) > 10 || !collision.selection_bit(aod::evsel::kNoITSROFrameBorder) || !collision.selection_bit(aod::evsel::kNoTimeFrameBorder) || !collision.selection_bit(aod::evsel::kNoSameBunchPileup) || !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
