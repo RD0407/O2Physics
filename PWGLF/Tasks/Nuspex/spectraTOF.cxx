@@ -1335,15 +1335,10 @@ struct tofSpectra {
                                 aod::pidTOFFullPi, aod::pidTOFFullKa, aod::pidTOFFullPr> const& tracks)
 {
     // Event selection criteria
-    if (!collision.sel8() || std::abs(collision.posZ()) > 10 || 
-        !collision.selection_bit(aod::evsel::kNoITSROFrameBorder) ||
-        !collision.selection_bit(aod::evsel::kNoTimeFrameBorder) ||
-        !collision.selection_bit(aod::evsel::kNoSameBunchPileup) ||
-        !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
-        return;
+    if (!collision.sel8() || std::abs(collision.posZ()) > 10 || !collision.selection_bit(aod::evsel::kNoITSROFrameBorder) || !collision.selection_bit(aod::evsel::kNoTimeFrameBorder) || !collision.selection_bit(aod::evsel::kNoSameBunchPileup) || !collision.selection_bit(aod::evsel::kIsGoodZvtxFT0vsPV)) {
+      return;
     }
     histos.fill(HIST("test_occupancy/event/vertexz"), collision.posZ());
-
     // Multiplicity and occupancy
     int occupancy = collision.trackOccupancyInTimeRange();
     const float multiplicity = getMultiplicity(collision);
@@ -1353,10 +1348,7 @@ struct tofSpectra {
 
     for (const auto& track : tracks) {
         // Track selection criteria
-        if (track.tpcNClsCrossedRows() < 70 || track.tpcChi2NCl() > 4 || track.tpcChi2NCl() < 0.5 || 
-            track.itsChi2NCl() > 36 || std::abs(track.dcaXY()) > 0.05 || std::abs(track.dcaZ()) > 2.0 || 
-            std::abs(track.eta()) > 0.8 || track.tpcCrossedRowsOverFindableCls() < 0.8 || track.tpcNClsFound() < 100 ||
-            !o2::aod::track::TPCrefit || !o2::aod::track::ITSrefit) {
+        if (track.tpcNClsCrossedRows() < 70 || track.tpcChi2NCl() > 4 || track.tpcChi2NCl() < 0.5 || track.itsChi2NCl() > 36 || std::abs(track.dcaXY()) > 0.05 || std::abs(track.dcaZ()) > 2.0 || std::abs(track.eta()) > 0.8 || track.tpcCrossedRowsOverFindableCls() < 0.8 || track.tpcNClsFound() < 100 || !o2::aod::track::TPCrefit || !o2::aod::track::ITSrefit) {
             continue;
         }
         const auto& nsigmaTPCPi = o2::aod::pidutils::tpcNSigma<2>(track);
