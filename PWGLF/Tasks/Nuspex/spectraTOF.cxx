@@ -1843,9 +1843,7 @@ struct tofSpectra { // o2-linter: disable=name/struct
     if (!mcParticle.isPhysicalPrimary()) {
       if (mcParticle.getProcess() == 4) {
         if (includeCentralityMC) {
-            if (includeCentralityMC) {
               histos.fill(HIST(hpt_num_str[i]), track.pt(), multiplicity, track.dcaXY());
-          }
         } else {
           histos.fill(HIST(hpt_num_str[i]), track.pt(), multiplicity);
         }
